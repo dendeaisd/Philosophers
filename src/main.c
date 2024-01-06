@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/03 23:03:09 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/06 21:21:35 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+//TODO: add ft_atoi
 
 static bool	parse_args(int ac, char **av)
 {
@@ -19,30 +20,42 @@ static bool	parse_args(int ac, char **av)
 
 	i = 0;
 	if (!(*av) || *av[0] == '0')
-		return (write(2, "Invalid argument\n", 18), false);
+		error(ARG_ERROR);
 	while (++i < ac)
 	{
 		j = -1;
 		while (av[i][++j])
 			if (!ft_isdigit(av[i][j]))
-				return (write(2, "Invalid argument\n", 18), false);
+				error(ARG_ERROR);
 	}
+	if (atoi(av[1]) > 200)
+		error(PHIL_NB);
 	return (true);
 }
 
 int	main(int ac, char **av)
 {
-	if (ac != 5 || ac != 6)
+	t_env	*env;
+	t_philo	*philos;
+	int		i;
+	
+	
+	i = -1;
+	if (ac != 5 && ac != 6)
+		error(ARG_NB);
+	env = init_env(ac, av);
+	philos = init_philos(env);
+	if (parse_args(ac, av))
 	{
-		write(2, "Wrong number of arguments\n", 27);
-		return (1);
-	}
-	if (parse_args(ac, av) == true)
-	{
-		//init
-		//create threads
-		//join threads
-		//destroy mutexes
+		while(++i < env->nb_philo)
+		{
+			if (pthread_create(&philos[i].thread_id, NULL, &philo_routine, &philos[i]))
+				error(THREAD_ERROR);
+		
+		}
+		pthread_join(philos[i].thread_id, NULL);
+		free(philos);
+		free(env);	
 	}
 	return (0);
 }

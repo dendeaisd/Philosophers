@@ -6,19 +6,18 @@
 #    By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/03 21:11:34 by fvoicu            #+#    #+#              #
-#    Updated: 2024/01/03 21:28:00 by fvoicu           ###   ########.fr        #
+#    Updated: 2024/01/06 21:05:07 by fvoicu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:=	philo
 CC		:=	gcc
-FLAGS	:=	-Wall -Wextra -Werror -lpthread
+FLAGS	:=	-g -Wall -Wextra -Werror -pthread
 HEAD	:= -I ./include 
 
-SRC		:=	$(wilcard src/*.c) \
-				$(wilcard)	
+SRC		:=	$(wildcard src/*.c) 
 
-OBJ		:= $(SRC:.c=.o)
+OBJ		:=	$(SRC:.c=.o)
 
 
 all: $(NAME)
