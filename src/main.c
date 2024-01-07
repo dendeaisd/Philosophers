@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/07 17:28:20 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/07 19:42:49 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ int	main(int ac, char **av)
 		error(ARG_NB);
 	env = init_env(ac, av);
 	philos = init_philos(env);
-	printf("meals eaten: %d\n", env->meals_eaten);
-	printf("nb_meals: %d\n", env->nb_meals);
 	if (parse_args(ac, av))
 	{
 		while (++i < env->nb_philo)
@@ -57,7 +55,6 @@ int	main(int ac, char **av)
 		if (pthread_create(&env->supervisor, NULL, &supervisor, &philos))
 			error(THREAD_ERROR);
 		pthread_join(philos->thread_id, NULL);
-		printf("meals eaten: %d\n", env->meals_eaten);
 		free(philos);
 		free(env);
 	}

@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/07 17:26:36 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/07 19:45:03 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,21 @@ void	msleep(long sleep)
 void	philo_print(t_env *env, t_philo *philo, t_pstate state)
 {
 	long	time;
+	int		id;
 
+	id = philo->id;
 	time = get_time() - env->start_time;
 	if (state == FORK_TAKEN)
-		printf("%zu %d has taken a fork\n", time, philo->id);
+		printf("%zu %d \033[38;5;68mhas taken a fork\033[0;97m\n", time, id);
 	else if (state == EATING)
-		printf("%zu %d is eating\n", time, philo->id);
+		printf("%zu %d \033[38;5;87mis eating\033[0;97m\n", time, id);
 	else if (state == SLEEPING)
-		printf("%zu %d is sleeping\n", time, philo->id);
+		printf \
+		("%zu %d \033[38;2;177;156;217mis sleeping\033[0;97m\n", time, id);
 	else if (state == THINKING)
-		printf("%zu %d is thinking\n", time, philo->id);
+		printf("%zu %d \033[38;5;156mis thinking\033[0;97m\n", time, id);
 	else if (state == DIED)
-		printf("%zu %d is dead\n", time, philo->id);
+		printf("%zu %d \033[0;31mdied\033[0;97m\n", time, id);
 }
 
 void	*error(t_error error)
