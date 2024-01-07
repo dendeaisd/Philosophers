@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/06 20:32:14 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/07 17:26:36 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,43 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-size_t	get_time(void)
+long	get_time(void)
 {
-	struct timeval	tv;
+	struct timeval	time;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-
-void	philo_print(t_philo *philo, t_pstate state)
+void	msleep(long sleep)
 {
-	if(state == FORK_TAKEN)
-		printf("%zu %d has taken a fork\n", get_time(), philo->id);
+	long	start;
+
+	start = get_time();
+	while ((get_time() - start) < sleep)
+		usleep(1000);
+}
+
+void	philo_print(t_env *env, t_philo *philo, t_pstate state)
+{
+	long	time;
+
+	time = get_time() - env->start_time;
+	if (state == FORK_TAKEN)
+		printf("%zu %d has taken a fork\n", time, philo->id);
 	else if (state == EATING)
-		printf("%zu %d is eating\n", get_time(), philo->id);
+		printf("%zu %d is eating\n", time, philo->id);
 	else if (state == SLEEPING)
-		printf("%zu %d is sleeping\n", get_time(), philo->id);
+		printf("%zu %d is sleeping\n", time, philo->id);
 	else if (state == THINKING)
-		printf("%zu %d is thinking\n", get_time(), philo->id);
+		printf("%zu %d is thinking\n", time, philo->id);
 	else if (state == DIED)
-		printf("%zu %d died\n", get_time(), philo->id);
+		printf("%zu %d is dead\n", time, philo->id);
 }
 
-void*	error(t_error error)
+void	*error(t_error error)
 {
-	if(error == ARG_ERROR)
+	if (error == ARG_ERROR)
 		write(2, "Invalid argument\n", 18);
 	else if (error == ARG_NB)
 		write(2, "Wrong number of arguments\n", 27);
@@ -58,4 +69,4 @@ void*	error(t_error error)
 	else if (error == PHIL_NB)
 		write(2, "Too many philosophers\n", 22);
 	return (NULL);
-}		
+}

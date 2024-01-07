@@ -1,5 +1,5 @@
 ALLOWED FUNCS :: memset, printf, malloc, free, write,
-usleep, 
+msleep, 
 gettimeofday, 
 pthread_create,
 pthread_detach, 

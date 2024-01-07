@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/06 21:21:35 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/07 17:28:20 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,28 @@ int	main(int ac, char **av)
 	t_env	*env;
 	t_philo	*philos;
 	int		i;
-	
-	
+
 	i = -1;
 	if (ac != 5 && ac != 6)
 		error(ARG_NB);
 	env = init_env(ac, av);
 	philos = init_philos(env);
+	printf("meals eaten: %d\n", env->meals_eaten);
+	printf("nb_meals: %d\n", env->nb_meals);
 	if (parse_args(ac, av))
 	{
-		while(++i < env->nb_philo)
+		while (++i < env->nb_philo)
 		{
-			if (pthread_create(&philos[i].thread_id, NULL, &philo_routine, &philos[i]))
+			if (pthread_create \
+				(&philos[i].thread_id, NULL, &philo_routine, &philos[i]))
 				error(THREAD_ERROR);
-		
 		}
-		pthread_join(philos[i].thread_id, NULL);
+		if (pthread_create(&env->supervisor, NULL, &supervisor, &philos))
+			error(THREAD_ERROR);
+		pthread_join(philos->thread_id, NULL);
+		printf("meals eaten: %d\n", env->meals_eaten);
 		free(philos);
-		free(env);	
+		free(env);
 	}
 	return (0);
 }

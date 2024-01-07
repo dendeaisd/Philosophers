@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/06 20:32:25 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/07 17:30:21 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <pthread.h>
 # include <stdbool.h>
 
-
 typedef enum e_pstate
 {
 	THINKING,
@@ -31,33 +30,33 @@ typedef enum e_pstate
 	DIED
 }	t_pstate;
 
-
 typedef struct s_env
 {
-	int				nb_philo;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			start_time;
-	int				nb_meals;
-	int				meals_eaten;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	logg;
+	int					nb_philo;
+	long				time_to_die;
+	size_t				time_to_eat;
+	size_t				time_to_sleep;
+	long				start_time;
+	int					nb_meals;
+	int					meals_eaten;
+	pthread_mutex_t		protect_meals;
+	pthread_mutex_t		*forks;
+	pthread_mutex_t		status;
+	pthread_t			supervisor;
 }	t_env;
 
 typedef struct s_philo
 {
-	int				id;
-	int				last_meal;
-	t_pstate		state;
-	t_env			*env;
-	pthread_t		thread_id;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
+	int					id;
+	int					last_meal;
+	t_pstate			state;
+	t_env				*env;
+	pthread_t			thread_id;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
 }	t_philo;
 
-
-typedef	enum e_error
+typedef enum e_error
 {
 	ARG_ERROR,
 	ARG_NB,
@@ -69,15 +68,19 @@ typedef	enum e_error
 
 /*INIT*/
 t_env	*init_env(int ac, char **av);
-t_philo *init_philos(t_env *env);
+t_philo	*init_philos(t_env *env);
 
 /*ROUTINE*/
 void	*philo_routine(void *arg);
 
+/*SUPERVISOR*/
+void	*supervisor(void *arg);
+
 /**UTILS**/
 int		ft_isdigit(int c);
-size_t	get_time(void);
-void	philo_print(t_philo *philo, t_pstate state);
-void*	error(t_error error);
+long	get_time(void);
+void	philo_print(t_env *env, t_philo *philo, t_pstate state);
+void	*error(t_error error);
+void	msleep(long sleep);
 
 #endif
