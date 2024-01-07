@@ -6,34 +6,41 @@
 #    By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/03 21:11:34 by fvoicu            #+#    #+#              #
-#    Updated: 2024/01/06 21:05:07 by fvoicu           ###   ########.fr        #
+#    Updated: 2024/01/07 20:07:41 by fvoicu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	:=	philo
-CC		:=	gcc
-FLAGS	:=	-g -Wall -Wextra -Werror -pthread
-HEAD	:= -I ./include 
+NAME		:=	philo
+CC			:=	gcc
+FLAGS		:=	-g -Wall -Wextra -Werror -pthread
+HEAD		:= -I ./include 
 
-SRC		:=	$(wildcard src/*.c) 
+SRC			:=	$(wildcard src/*.c) 
 
-OBJ		:=	$(SRC:.c=.o)
+OBJ			:=	$(SRC:.c=.o)
 
+UP			:= \033[A
+CUT			:= \033[K
+
+GREY		:= \033[38;5;244m
+PINK		:= \033[38;5;218m
+RESET		:= \033[0m
 
 all: $(NAME)
 
-%.o: %.c
-	$(CC) $(FLAGS) $(HEAD) -c $< -o $@
+%.o:%.c
+			@printf "$(UP)$(BEGIN)$(CUT)$(PINK)Compiling: $<...\n$(RESET)"
+			@$(CC) $(FLAGS) $(HEAD) -c $< -o $@
+			@printf "$(UP)$(BEGIN)$(CUT)$(GREY)Philosophers compiled succesfully!$(REST)🗿\n"
 
-$(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(HEAD) -o $(NAME)
-
-
+$(NAME):$(OBJ)
+			@$(CC) $(FLAGS) $(OBJ) $(HEAD) -o $(NAME)
+	
 clean:
-	rm -f $(OBJ)
+			@rm -f $(OBJ)
 
-fclean: clean
-	rm -f $(NAME)
+fclean: 	clean
+			@rm -f $(NAME)
 
 re: fclean all
 
