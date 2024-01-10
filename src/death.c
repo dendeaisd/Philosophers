@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 00:37:01 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 16:15:40 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:18:12 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 static int	death_check(t_philo *philos)
 {
 	int		i;
-	long 	till_next_meal = 0;
+	long	till_next_meal;
 
+	till_next_meal = 0;
 	while (1)
 	{
 		pthread_mutex_lock(&philos->env->status_mutex);
@@ -47,9 +48,9 @@ void	*supervisor(void *arg)
 
 	philos = (t_philo *)arg;
 	result = death_check(philos);
-	i = -1; 
-	if (result)	
-		while (++i < philos->env->nb_philo) 
+	i = -1;
+	if (result)
+		while (++i < philos->env->nb_philo)
 			pthread_join(philos[i].thread_id, NULL);
 	pthread_mutex_destroy(&philos->env->status_mutex);
 	pthread_mutex_destroy(&philos->env->protect_meals);

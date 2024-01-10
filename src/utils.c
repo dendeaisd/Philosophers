@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 16:10:47 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:19:31 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,4 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state)
 		printf("%zu %d \033[38;5;156mis thinking\033[0;97m\n", time, id);
 	else if (state == DIED)
 		printf("%zu %d \033[0;31mdied\033[0;97m\n", time, id);
-}
-
-void	*error(t_error error)
-{
-	if (error == ARG_ERROR)
-		write(2, "Invalid argument\n", 18);
-	else if (error == ARG_NB)
-		write(2, "Wrong number of arguments\n", 27);
-	else if (error == MALLOC_ERROR)
-		write(2, "Error allocating memory\n", 24);
-	else if (error == THREAD_ERROR)
-		write(2, "Error creating thread\n", 22);
-	else if (error == MUTEX_ERROR)
-		write(2, "Error initializing mutex\n", 26);
-	else if (error == PHIL_NB)
-		write(2, "Too many philosophers\n", 22);
-	return (NULL);
 }
