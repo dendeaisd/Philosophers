@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 16:18:51 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:25:56 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	main(int ac, char **av)
 				error(THREAD_ERROR);
 		}
 		pthread_join(env->supervisor, NULL);
+		free(env->forks);
 		free(philos);
 		free(env);
 	}
