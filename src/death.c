@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 00:37:01 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 16:18:12 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:14:01 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ static int	death_check(t_philo *philos)
 			till_next_meal = (get_time() - philos[i].last_meal);
 			if (till_next_meal > philos->env->time_to_die)
 			{
+				pthread_mutex_lock(&philos->env->protect_death);
 				philos[i].state = DIED;
 				philo_print(philos->env, &philos[i], DIED);
+				pthread_mutex_unlock(&philos->env->protect_death);
 				philos->env->status = 0;
 				pthread_mutex_unlock(&philos->env->status_mutex);
 				return (1);

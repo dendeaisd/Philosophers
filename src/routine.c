@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 17:32:42 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 17:49:00 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ void	*philo_routine(void *arg)
 	int		running;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->env->status_mutex);
 	running = philo->env->status;
+	pthread_mutex_unlock(&philo->env->status_mutex);
 	if (philo->env->nb_philo == 1)
 		return (philo_print(philo->env, philo, THINKING), NULL);
 	if (philo->id % 2 == 0)

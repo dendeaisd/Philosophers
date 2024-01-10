@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 16:04:49 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:07:29 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ typedef struct s_env
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		status_mutex;
 	pthread_t			supervisor;
-	int					status;			
+	int					status;
+	pthread_mutex_t	protect_death;
 }	t_env;
 
 typedef struct s_philo

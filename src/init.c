@@ -6,11 +6,21 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:03:04 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 16:19:48 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 18:06:11 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void init_mutexes(t_env *env)
+{
+	if (pthread_mutex_init(&env->protect_meals, NULL))
+		error(MUTEX_ERROR);
+	if (pthread_mutex_init(&env->status_mutex, NULL))
+		error(MUTEX_ERROR);
+	if (pthread_mutex_init(&env->protect_death, NULL))
+		error(MUTEX_ERROR);
+}
 
 t_env	*init_env(int ac, char **av)
 {
@@ -28,16 +38,13 @@ t_env	*init_env(int ac, char **av)
 	if (ac == 6)
 		env->nb_meals = ft_atoi(av[5]) * env->nb_philo;
 	env->meals_eaten = 0;
-	if (pthread_mutex_init(&env->protect_meals, NULL))
-		error(MUTEX_ERROR);
 	env->forks = malloc(sizeof(pthread_mutex_t) * env->nb_philo);
 	if (!(env->forks))
 		error(MALLOC_ERROR);
 	if (env->time_to_die < 1 || env->time_to_eat < 1 || env->time_to_sleep < 1)
 		error(ARG_ERROR);
-	if (pthread_mutex_init(&env->status_mutex, NULL))
-		error(MUTEX_ERROR);
 	env->status = 1;
+	init_mutexes(env);
 	return (env);
 }
 
