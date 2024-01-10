@@ -6,12 +6,11 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/07 19:45:03 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:10:47 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-//TODO: add ft_atoi
 
 int	ft_isdigit(int c)
 {
@@ -20,7 +19,36 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-long	get_time(void)
+int	ft_atoi(const char *str)
+{
+	int					i;
+	int					sign;
+	unsigned long int	final_nbr;
+
+	i = 0;
+	sign = 1;
+	final_nbr = 0;
+	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r' || str[i] == '\t')
+		++i;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i++] == '-')
+			sign = -1;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		final_nbr = final_nbr * 10 + str[i] - '0';
+		i++;
+	}
+	if (final_nbr > 2147483647 && sign == 1)
+		return (-1);
+	if (final_nbr > 2147483648 && sign == -1)
+		return (0);
+	return (final_nbr * sign);
+}
+
+time_t	get_time(void)
 {
 	struct timeval	time;
 
@@ -44,7 +72,9 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state)
 
 	id = philo->id;
 	time = get_time() - env->start_time;
-	if (state == FORK_TAKEN)
+	if (env->status == 0)
+		return ;
+	else if (state == FORK_TAKEN)
 		printf("%zu %d \033[38;5;68mhas taken a fork\033[0;97m\n", time, id);
 	else if (state == EATING)
 		printf("%zu %d \033[38;5;87mis eating\033[0;97m\n", time, id);

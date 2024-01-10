@@ -6,12 +6,11 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/07 19:42:49 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 15:56:21 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-//TODO: add ft_atoi
 
 static bool	parse_args(int ac, char **av)
 {
@@ -28,7 +27,7 @@ static bool	parse_args(int ac, char **av)
 			if (!ft_isdigit(av[i][j]))
 				error(ARG_ERROR);
 	}
-	if (atoi(av[1]) > 200)
+	if (ft_atoi(av[1]) > 200)
 		error(PHIL_NB);
 	return (true);
 }
@@ -46,15 +45,16 @@ int	main(int ac, char **av)
 	philos = init_philos(env);
 	if (parse_args(ac, av))
 	{
+		if (pthread_create(&env->supervisor, NULL, &supervisor, philos))
+			error(THREAD_ERROR);
+		
 		while (++i < env->nb_philo)
 		{
 			if (pthread_create \
 				(&philos[i].thread_id, NULL, &philo_routine, &philos[i]))
 				error(THREAD_ERROR);
 		}
-		if (pthread_create(&env->supervisor, NULL, &supervisor, &philos))
-			error(THREAD_ERROR);
-		pthread_join(philos->thread_id, NULL);
+		pthread_join(env->supervisor, NULL);
 		free(philos);
 		free(env);
 	}

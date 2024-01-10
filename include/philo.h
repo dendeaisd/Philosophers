@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/07 17:30:21 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:04:49 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ typedef struct s_env
 	int					meals_eaten;
 	pthread_mutex_t		protect_meals;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t		status;
+	pthread_mutex_t		status_mutex;
 	pthread_t			supervisor;
+	int					status;			
 }	t_env;
 
 typedef struct s_philo
 {
 	int					id;
-	int					last_meal;
+	long				last_meal;
 	t_pstate			state;
 	t_env				*env;
 	pthread_t			thread_id;
@@ -77,6 +78,7 @@ void	*philo_routine(void *arg);
 void	*supervisor(void *arg);
 
 /**UTILS**/
+int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 long	get_time(void);
 void	philo_print(t_env *env, t_philo *philo, t_pstate state);
