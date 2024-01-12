@@ -6,11 +6,12 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 17:49:00 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/12 15:41:47 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+//TODO: divide philo_routinne, maybe restructure a bit
 
 static void	philo_take_forks(t_env *env, t_philo *philo)
 {
@@ -61,7 +62,8 @@ void	*philo_routine(void *arg)
 	running = philo->env->status;
 	pthread_mutex_unlock(&philo->env->status_mutex);
 	if (philo->env->nb_philo == 1)
-		return (philo_print(philo->env, philo, THINKING), NULL);
+		return (philo_print(philo->env, philo, FORK_TAKEN), \
+			philo_print(philo->env, philo, THINKING), NULL);
 	if (philo->id % 2 == 0)
 	{
 		philo_print(philo->env, philo, THINKING);
@@ -72,6 +74,9 @@ void	*philo_routine(void *arg)
 	while (philo->env->nb_meals == -1 \
 		|| philo->env->meals_eaten < philo->env->nb_meals)
 	{
+		pthread_mutex_lock(&philo->env->status_mutex);
+		running = philo->env->status;
+		pthread_mutex_unlock(&philo->env->status_mutex);
 		philo_take_forks(philo->env, philo);
 		philo_eat(philo->env, philo);
 		philo_sleep(philo->env, philo);
