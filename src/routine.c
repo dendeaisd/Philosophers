@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 16:20:51 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:46:18 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 static void	philo_take_forks(t_env *env, t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork);
+	// printf("locked right fork\n");
 	philo->state = FORK_TAKEN;
 	philo_print(env, philo, FORK_TAKEN, 0);
 	if (philo->left_fork != NULL)
 	{
 		pthread_mutex_lock(philo->left_fork);
+		// printf("locked left fork\n");
 		philo_print(env, philo, FORK_TAKEN, 0);
 		philo->last_meal = get_time();
 	}
@@ -35,8 +37,12 @@ static void	philo_eat(t_env *env, t_philo *philo)
 	pthread_mutex_unlock(&env->protect_meals);
 	msleep(philo->env->time_to_eat);
 	pthread_mutex_unlock(philo->right_fork);
+	// printf("unlocked right fork\n");
 	if (philo->left_fork != NULL)
+	{	
 		pthread_mutex_unlock(philo->left_fork);
+		// printf("unlocked left fork\n");
+	}	
 }
 
 static void	philo_sleep(t_env *env, t_philo *philo)
@@ -74,6 +80,7 @@ void	*philo_routine(void *arg)
 	while (philo->env->nb_meals == -1 \
 		|| philo->env->meals_eaten < philo->env->nb_meals)
 	{
+		printf("philo %d is running\n", philo->id);
 		pthread_mutex_lock(&philo->env->status_mutex);
 		running = philo->env->status;
 		pthread_mutex_unlock(&philo->env->status_mutex);
