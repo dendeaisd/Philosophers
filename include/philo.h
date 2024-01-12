@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 16:19:31 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/12 19:22:11 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef struct s_env
 	int					meals_eaten;
 	pthread_mutex_t		protect_meals;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t		status_mutex;
 	pthread_t			supervisor;
+	pthread_mutex_t		logging_mutex;
 	int					status;
 }	t_env;
 
@@ -55,6 +55,7 @@ typedef struct s_philo
 	pthread_t			thread_id;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
+	pthread_mutex_t		status_mutex;
 }	t_philo;
 
 typedef enum e_error

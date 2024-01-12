@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 16:18:54 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/12 19:23:48 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,15 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked)
 	int		env_status;
 	
 	if (!locked)
-		pthread_mutex_lock(&env->status_mutex);
+		pthread_mutex_lock(&philo->status_mutex);
 	env_status = env->status;
 	if(!locked)
-		pthread_mutex_unlock(&env->status_mutex);
+		pthread_mutex_unlock(&philo->status_mutex);
 	if (env_status == 0)
 		return ;
 	id = philo->id;
 	time = get_time() - env->start_time;
+	pthread_mutex_lock(&env->logging_mutex);
 	if (state == FORK_TAKEN)
 		printf("%zu %d \033[38;5;68mhas taken a fork\033[0;97m\n", time, id);
 	else if (state == EATING)
@@ -91,4 +92,5 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked)
 		printf("%zu %d \033[38;5;156mis thinking\033[0;97m\n", time, id);
 	else if (state == DIED)
 		printf("%zu %d \033[0;31mdied\033[0;97m\n", time, id);
+	pthread_mutex_unlock(&env->logging_mutex);
 }

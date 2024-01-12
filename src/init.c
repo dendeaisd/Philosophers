@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:03:04 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 15:59:13 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/12 19:18:20 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	init_mutexes(t_env *env)
 {
 	if (pthread_mutex_init(&env->protect_meals, NULL))
 		error(MUTEX_ERROR);
-	if (pthread_mutex_init(&env->status_mutex, NULL))
+	if (pthread_mutex_init(&env->logging_mutex, NULL))
 		error(MUTEX_ERROR);
 }
 
@@ -57,6 +57,8 @@ t_philo	*init_philos(t_env *env)
 		error(MALLOC_ERROR);
 	while (++i < env->nb_philo)
 	{
+		if (pthread_mutex_init(&philos[i].status_mutex, NULL))
+			error(MUTEX_ERROR);
 		philos[i].id = i + 1;
 		philos[i].last_meal = get_time();
 		philos[i].env = env;
@@ -69,6 +71,7 @@ t_philo	*init_philos(t_env *env)
 		if (pthread_mutex_init(&env->forks[i], NULL))
 			error(MUTEX_ERROR);
 	}
+	
 	return (philos);
 }
 
