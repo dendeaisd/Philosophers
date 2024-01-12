@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/10 18:04:49 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:18:54 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,22 @@ void	msleep(long sleep)
 		usleep(1000);
 }
 
-void	philo_print(t_env *env, t_philo *philo, t_pstate state)
+void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked)
 {
 	long	time;
 	int		id;
-
+	int		env_status;
+	
+	if (!locked)
+		pthread_mutex_lock(&env->status_mutex);
+	env_status = env->status;
+	if(!locked)
+		pthread_mutex_unlock(&env->status_mutex);
+	if (env_status == 0)
+		return ;
 	id = philo->id;
 	time = get_time() - env->start_time;
-	if (env->status == 0)
-		return ;
-	else if (state == FORK_TAKEN)
+	if (state == FORK_TAKEN)
 		printf("%zu %d \033[38;5;68mhas taken a fork\033[0;97m\n", time, id);
 	else if (state == EATING)
 		printf("%zu %d \033[38;5;87mis eating\033[0;97m\n", time, id);

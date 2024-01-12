@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 15:59:41 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/12 16:19:31 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	*supervisor(void *arg);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 long	get_time(void);
-void	philo_print(t_env *env, t_philo *philo, t_pstate state);
+void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked);
 void	*error(t_error error);
 void	msleep(long sleep);
 
