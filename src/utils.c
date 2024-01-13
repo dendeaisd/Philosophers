@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/13 19:36:17 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/13 23:59:51 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked)
 	long	time;
 	int		id;
 	int		env_status;
-	
+
 	if (!locked)
 		pthread_mutex_lock(&philo->env->status_mutex);
 	env_status = env->status;
-	if(!locked)
+	if (!locked)
 		pthread_mutex_unlock(&philo->env->status_mutex);
 	if (env_status == 0)
 		return ;

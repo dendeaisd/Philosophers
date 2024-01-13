@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 00:37:01 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/13 19:35:06 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/13 23:57:41 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	death_check(t_philo *philos)
 				philos->env->status = 0;
 				pthread_mutex_unlock(&philos->env->status_mutex);
 				i = -1;
-				while(++i < philos->env->nb_philo)
+				while (++i < philos->env->nb_philo)
 				{
 					pthread_mutex_lock(&philos->env->status_mutex);
 					philos->env->status = 0;

@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:03:04 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/13 19:47:23 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/13 23:58:19 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ t_philo	*init_philos(t_env *env)
 		error(MALLOC_ERROR);
 	while (++i < env->nb_philo)
 	{
-		// if (pthread_mutex_init(&philos[i].status_mutex, NULL))
-		// 	error(MUTEX_ERROR);
 		philos[i].id = i + 1;
 		philos[i].last_meal = get_time();
 		philos[i].env = env;
@@ -70,7 +68,6 @@ t_philo	*init_philos(t_env *env)
 		if (pthread_mutex_init(&env->forks[i], NULL))
 			error(MUTEX_ERROR);
 	}
-	
 	return (philos);
 }
 
