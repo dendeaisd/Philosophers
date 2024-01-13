@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 00:37:01 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 20:03:57 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/13 19:35:06 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,22 @@ static int	death_check(t_philo *philos)
 		i = -1;
 		while (++i < philos->env->nb_philo)
 		{
+			pthread_mutex_lock(&philos->env->protect_meals);
 			till_next_meal = (get_time() - philos[i].last_meal);
+			pthread_mutex_unlock(&philos->env->protect_meals);
 			if (till_next_meal > philos->env->time_to_die)
 			{
-				pthread_mutex_lock(&philos[i].status_mutex);
+				pthread_mutex_lock(&philos->env->status_mutex);
 				philos[i].state = DIED;
 				philo_print(philos->env, &philos[i], DIED, 1);
 				philos->env->status = 0;
-				pthread_mutex_unlock(&philos[i].status_mutex);
+				pthread_mutex_unlock(&philos->env->status_mutex);
 				i = -1;
 				while(++i < philos->env->nb_philo)
 				{
-					pthread_mutex_lock(&philos[i].status_mutex);
-					philos[i].state = DIED;
-					pthread_mutex_unlock(&philos[i].status_mutex);
+					pthread_mutex_lock(&philos->env->status_mutex);
+					philos->env->status = 0;
+					pthread_mutex_unlock(&philos->env->status_mutex);
 				}
 				return (1);
 			}
@@ -58,7 +60,7 @@ void	*supervisor(void *arg)
 	if (result)
 		while (++i < philos->env->nb_philo)
 			pthread_join(philos[i].thread_id, NULL);
-	pthread_mutex_destroy(&philos->status_mutex);
+	pthread_mutex_destroy(&philos->env->status_mutex);
 	pthread_mutex_destroy(&philos->env->protect_meals);
 	return (NULL);
 }
