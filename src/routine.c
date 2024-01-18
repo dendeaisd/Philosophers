@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:22:10 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/18 19:32:13 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ void	*philo_routine(void *arg)
 	while (philo->env->nb_meals == -1 \
 		|| philo->env->meals_eaten < philo->env->nb_meals)
 	{
-		printf("philo %d is running\n", philo->id);
 		pthread_mutex_lock(&philo->env->status_mutex);
 		running = philo->env->status;
 		pthread_mutex_unlock(&philo->env->status_mutex);
