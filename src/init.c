@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:03:04 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:25:36 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/18 19:38:53 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,7 @@ t_philo	*init_philos(t_env *env)
 		philos[i].last_meal = get_time();
 		philos[i].env = env;
 		philos[i].right_fork = &env->forks[i];
-		if (env->nb_philo == 1)
-			philos[i].left_fork = NULL;
-		else
-			philos[i].left_fork = &env->forks[(i + 1) % env->nb_philo];
+		philos[i].left_fork = &env->forks[(i + 1) % env->nb_philo];
 		philos[i].thread_id = 0;
 		if (pthread_mutex_init(&env->forks[i], NULL))
 			error(MUTEX_ERROR);

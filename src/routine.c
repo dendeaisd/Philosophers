@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:32:13 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/18 19:43:57 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,18 @@ static void	philo_take_forks(t_env *env, t_philo *philo)
 	if (is_dead(philo))
 		return ;
 	pthread_mutex_lock(philo->right_fork);
-	// printf("locked right fork\n");
+	pthread_mutex_lock(&env->status_mutex);
 	philo->state = FORK_TAKEN;
+	pthread_mutex_unlock(&env->status_mutex);
 	philo_print(env, philo, FORK_TAKEN, 0);
-	if (philo->left_fork != NULL)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		// printf("locked left fork\n");
-		philo_print(env, philo, FORK_TAKEN, 0);
-		philo->last_meal = get_time();
-	}
+	pthread_mutex_lock(philo->left_fork);
+
+	philo_print(env, philo, FORK_TAKEN, 0);
+	pthread_mutex_lock(&env->protect_meals);
+	philo->last_meal = get_time();
+	pthread_mutex_unlock(&env->protect_meals);
 }
+
 
 static void	philo_eat(t_env *env, t_philo *philo)
 {
@@ -49,14 +50,10 @@ static void	philo_eat(t_env *env, t_philo *philo)
 	pthread_mutex_lock(&env->protect_meals);
 	philo->env->meals_eaten++;
 	pthread_mutex_unlock(&env->protect_meals);
+	
 	msleep(philo->env->time_to_eat);
+	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
-	// printf("unlocked right fork\n");
-	if (philo->left_fork != NULL)
-	{	
-		pthread_mutex_unlock(philo->left_fork);
-		// printf("unlocked left fork\n");
-	}	
 }
 
 static void	philo_sleep(t_env *env, t_philo *philo)
