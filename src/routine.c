@@ -6,15 +6,29 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 16:46:18 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/18 19:22:10 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 //TODO: divide philo_routinne, maybe restructure a bit
 
+static int is_dead(t_philo *philo)
+{	
+	pthread_mutex_lock(&philo->env->status_mutex);
+	if (!philo->env->status)
+	{
+		pthread_mutex_unlock(&philo->env->status_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->env->status_mutex);
+	return (0);
+}
+
 static void	philo_take_forks(t_env *env, t_philo *philo)
 {
+	if (is_dead(philo))
+		return ;
 	pthread_mutex_lock(philo->right_fork);
 	// printf("locked right fork\n");
 	philo->state = FORK_TAKEN;
@@ -47,6 +61,8 @@ static void	philo_eat(t_env *env, t_philo *philo)
 
 static void	philo_sleep(t_env *env, t_philo *philo)
 {
+	if (is_dead(philo))
+		return ;
 	philo->state = SLEEPING;
 	philo_print(env, philo, SLEEPING, 0);
 	msleep(philo->env->time_to_sleep);
@@ -54,6 +70,8 @@ static void	philo_sleep(t_env *env, t_philo *philo)
 
 static void	philo_think(t_env *env, t_philo *philo)
 {
+	if (is_dead(philo))
+		return ;
 	philo->state = THINKING;
 	philo_print(env, philo, THINKING, 0);
 }
