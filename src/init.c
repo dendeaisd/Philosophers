@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:03:04 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/12 15:59:13 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/18 19:25:36 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	init_mutexes(t_env *env)
 	if (pthread_mutex_init(&env->protect_meals, NULL))
 		error(MUTEX_ERROR);
 	if (pthread_mutex_init(&env->status_mutex, NULL))
+		error(MUTEX_ERROR);
+	if (pthread_mutex_init(&env->print_mutex, NULL))
 		error(MUTEX_ERROR);
 }
 
