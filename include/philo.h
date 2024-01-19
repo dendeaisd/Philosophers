@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:25:25 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/19 23:58:09 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	*philo_routine(void *arg);
 void	*supervisor(void *arg);
 
 /**UTILS**/
+int		is_dead(t_philo *philo);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 long	get_time(void);

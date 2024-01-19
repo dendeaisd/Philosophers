@@ -6,11 +6,23 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 00:37:01 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:44:50 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/20 00:14:56 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	is_dead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->env->status_mutex);
+	if (!philo->env->status)
+	{
+		pthread_mutex_unlock(&philo->env->status_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->env->status_mutex);
+	return (0);
+}
 
 static int	death_check(t_philo *philos)
 {
@@ -32,8 +44,7 @@ static int	death_check(t_philo *philos)
 				philos[i].state = DIED;
 				philo_print(philos->env, &philos[i], DIED, 1);
 				philos->env->status = 0;
-				pthread_mutex_unlock(&philos->env->status_mutex);
-				return (1);
+				return (pthread_mutex_unlock(&philos->env->status_mutex), 1);
 			}
 		}
 		pthread_mutex_unlock(&philos->env->status_mutex);

@@ -6,11 +6,18 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:26:46 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/20 00:15:16 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+#define LAVANDER	"\033[38;2;177;156;217m"
+#define BLUE		"\033[38;5;68m"
+#define L_BLUE		"\033[38;5;159m"
+#define GREEN		"\033[38;5;156m"
+#define RED			"\033[0;31m"
+#define WHITE		"\033[0;97m"
 
 int	ft_isdigit(int c)
 {
@@ -70,11 +77,11 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked)
 	long	time;
 	int		id;
 	int		env_status;
-	
+
 	if (!locked)
 		pthread_mutex_lock(&env->status_mutex);
 	env_status = env->status;
-	if(!locked)
+	if (!locked)
 		pthread_mutex_unlock(&env->status_mutex);
 	if (env_status == 0)
 		return ;
@@ -82,15 +89,14 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked)
 	time = get_time() - env->start_time;
 	pthread_mutex_lock(&env->print_mutex);
 	if (state == FORK_TAKEN)
-		printf("%zu %d \033[38;5;68mhas taken a fork\033[0;97m\n", time, id);
+		printf("%zu %d %shas taken a fork%s\n", time, id, BLUE, WHITE);
 	else if (state == EATING)
-		printf("%zu %d \033[38;5;87mis eating\033[0;97m\n", time, id);
+		printf("%zu %d %sis eating%s\n", time, id, L_BLUE, WHITE);
 	else if (state == SLEEPING)
-		printf \
-		("%zu %d \033[38;2;177;156;217mis sleeping\033[0;97m\n", time, id);
+		printf("%zu %d %sis sleeping%s\n", time, id, LAVANDER, WHITE);
 	else if (state == THINKING)
-		printf("%zu %d \033[38;5;156mis thinking\033[0;97m\n", time, id);
+		printf("%zu %d %sis thinking%s\n", time, id, GREEN, WHITE);
 	else if (state == DIED)
-		printf("%zu %d \033[0;31mdied\033[0;97m\n", time, id);
+		printf("%zu %d %sdied%s\n", time, id, RED, WHITE);
 	pthread_mutex_unlock(&env->print_mutex);
 }
