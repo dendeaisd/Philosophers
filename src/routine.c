@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/19 23:57:37 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/20 00:54:46 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,24 @@
 static void	eating_routine(t_env *env, t_philo *philo, \
 			pthread_mutex_t *first_fork, pthread_mutex_t *second_fork)
 {
+	if (is_dead(philo))
+		return ;
 	pthread_mutex_lock(first_fork);
 	pthread_mutex_lock(&env->status_mutex);
 	philo->state = FORK_TAKEN;
 	pthread_mutex_unlock(&env->status_mutex);
-	philo_print(env, philo, FORK_TAKEN, 0);
+	philo_print(env, philo, FORK_TAKEN, env->status);
+		if (is_dead(philo))
+		return ;
 	pthread_mutex_lock(second_fork);
-	philo_print(env, philo, FORK_TAKEN, 0);
+	philo_print(env, philo, FORK_TAKEN, env->status);
 	pthread_mutex_lock(&env->protect_meals);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&env->protect_meals);
+	if (is_dead(philo))
+		return ;
 	philo->state = EATING;
-	philo_print(env, philo, EATING, 0);
+	philo_print(env, philo, EATING, env->status);
 	pthread_mutex_lock(&env->protect_meals);
 	philo->env->meals_eaten++;
 	pthread_mutex_unlock(&env->protect_meals);
@@ -55,6 +61,8 @@ static void	philo_eat(t_env *env, t_philo *philo)
 	if (philo->id == philo->env->nb_philo)
 		msleep(3);
 	eating_routine(env, philo, first_fork, second_fork);
+	if (is_dead(philo))
+		return ;
 }
 
 static void	philo_sleep(t_env *env, t_philo *philo)
@@ -62,7 +70,7 @@ static void	philo_sleep(t_env *env, t_philo *philo)
 	if (is_dead(philo))
 		return ;
 	philo->state = SLEEPING;
-	philo_print(env, philo, SLEEPING, 0);
+	philo_print(env, philo, SLEEPING, env->status);
 	msleep(philo->env->time_to_sleep);
 }
 
@@ -71,7 +79,9 @@ static void	philo_think(t_env *env, t_philo *philo)
 	if (is_dead(philo))
 		return ;
 	philo->state = THINKING;
-	philo_print(env, philo, THINKING, 0);
+	philo_print(env, philo, THINKING, env->status);
+	if (is_dead(philo))
+		return ;
 }
 
 void	*philo_routine(void *arg)
@@ -84,7 +94,7 @@ void	*philo_routine(void *arg)
 	running = philo->env->status;
 	pthread_mutex_unlock(&philo->env->status_mutex);
 	if (philo->env->nb_philo == 1)
-		return (philo_print(philo->env, philo, FORK_TAKEN, 0), \
+		return (philo_print(philo->env, philo, FORK_TAKEN, philo->env->status), \
 				NULL);
 	if (!running)
 		return (NULL);
