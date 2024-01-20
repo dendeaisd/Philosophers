@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/19 23:58:09 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/20 01:38:02 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_env
 	int					meals_eaten;
 	pthread_mutex_t		protect_meals;
 	pthread_mutex_t		*forks;
-	pthread_mutex_t		print_mutex;
+	// pthread_mutex_t		print_mutex;
 	pthread_mutex_t		status_mutex;
 	pthread_t			supervisor;
 	int					status;

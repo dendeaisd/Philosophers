@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/20 00:54:46 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/20 01:32:32 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 static void	eating_routine(t_env *env, t_philo *philo, \
 			pthread_mutex_t *first_fork, pthread_mutex_t *second_fork)
 {
-	if (is_dead(philo))
-		return ;
 	pthread_mutex_lock(first_fork);
 	pthread_mutex_lock(&env->status_mutex);
 	philo->state = FORK_TAKEN;
 	pthread_mutex_unlock(&env->status_mutex);
 	philo_print(env, philo, FORK_TAKEN, env->status);
-		if (is_dead(philo))
+	if (is_dead(philo))
 		return ;
 	pthread_mutex_lock(second_fork);
 	philo_print(env, philo, FORK_TAKEN, env->status);

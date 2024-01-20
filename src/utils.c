@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/20 00:45:34 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/20 01:37:45 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,27 +76,23 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked)
 {
 	long	time;
 	int		id;
-	int		env_status;
 
-	if (!locked)
-		pthread_mutex_lock(&env->status_mutex);
-	env_status = env->status;
-	if (!locked)
-		pthread_mutex_unlock(&env->status_mutex);
-	if (env_status == 0)
-		return ;
 	id = philo->id;
 	time = get_time() - env->start_time;
-	pthread_mutex_lock(&env->print_mutex);
-	if (state == FORK_TAKEN)
+	// pthread_mutex_lock(&env->print_mutex);
+	if (!locked)
+		pthread_mutex_lock(&env->status_mutex);
+	if (state == FORK_TAKEN && env->status)
 		printf("%zu %d %shas taken a fork%s\n", time, id, BLUE, WHITE);
-	else if (state == EATING)
+	else if (state == EATING && env->status)
 		printf("%zu %d %sis eating%s\n", time, id, L_BLUE, WHITE);
-	else if (state == SLEEPING)
+	else if (state == SLEEPING && env->status)
 		printf("%zu %d %sis sleeping%s\n", time, id, LAVANDER, WHITE);
-	else if (state == THINKING)
+	else if (state == THINKING && env->status)
 		printf("%zu %d %sis thinking%s\n", time, id, GREEN, WHITE);
 	else if (state == DIED)
 		printf("%zu %d %sdied%s\n", time, id, RED, WHITE);
-	pthread_mutex_unlock(&env->print_mutex);
+	if (!locked)
+		pthread_mutex_unlock(&env->status_mutex);
+	// pthread_mutex_unlock(&env->print_mutex);
 }
