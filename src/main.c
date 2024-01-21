@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:08:25 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 20:55:17 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@ static bool	parse_args(int ac, char **av)
 
 	i = 0;
 	if (!(*av) || *av[0] == '0')
-		return(error(ARG_ERROR), false);
+		return (error(ARG_ERROR), false);
 	if (av[1][0] == '0')
-		return(error(ARG_ERROR), false);
+		return (error(ARG_ERROR), false);
 	while (++i < ac)
 	{
 		j = -1;
 		while (av[i][++j])
-			if (!ft_isdigit(av[i][j]))
-				return(error(ARG_ERROR), false);
+			if (!(av[i][j] >= '0' && av[i][j] <= '9'))
+				return (error(ARG_ERROR), false);
 	}
 	if (ft_atoi(av[1]) > 200)
-		return(error(PHIL_NB), false);
+		return (error(PHIL_NB), false);
 	return (true);
 }
 
@@ -50,11 +50,9 @@ int	main(int ac, char **av)
 		if (pthread_create(&env->supervisor, NULL, &supervisor, philos))
 			error(THREAD_ERROR);
 		while (++i < env->nb_philo)
-		{
 			if (pthread_create \
 				(&philos[i].thread_id, NULL, &philo_routine, &philos[i]))
 				error(THREAD_ERROR);
-		}
 		pthread_join(env->supervisor, NULL);
 		free(env->forks);
 		free(philos);

@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/18 19:25:25 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 18:46:37 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef enum e_pstate
 	EATING,
 	SLEEPING,
 	FORK_TAKEN,
+	FULL,
 	DIED
 }	t_pstate;
 
@@ -79,10 +80,11 @@ void	*philo_routine(void *arg);
 void	*supervisor(void *arg);
 
 /**UTILS**/
+int		is_dead(t_philo *philo);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 long	get_time(void);
-void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked);
+void	philo_print(t_env *env, t_philo *philo, t_pstate state);
 void	*error(t_error error);
 void	msleep(long sleep);
 
