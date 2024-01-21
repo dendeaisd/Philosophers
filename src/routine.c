@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 19:28:38 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 20:57:14 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ static void	philo_eat(t_env *env, t_philo *philo)
 	if (philo->id == philo->env->nb_philo)
 		msleep(5);
 	eating_routine(env, philo, first_fork, second_fork);
-	if (is_dead(philo))
-		return ;
 }
 
 static void	philo_sleep(t_env *env, t_philo *philo)

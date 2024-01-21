@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 17:39:48 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 20:55:17 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ int	main(int ac, char **av)
 		if (pthread_create(&env->supervisor, NULL, &supervisor, philos))
 			error(THREAD_ERROR);
 		while (++i < env->nb_philo)
-		{
 			if (pthread_create \
 				(&philos[i].thread_id, NULL, &philo_routine, &philos[i]))
 				error(THREAD_ERROR);
-		}
 		pthread_join(env->supervisor, NULL);
 		free(env->forks);
 		free(philos);

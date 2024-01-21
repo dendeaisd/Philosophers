@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 19:02:36 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 20:56:24 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	msleep(long sleep)
 
 	start = get_time();
 	while ((get_time() - start) < sleep)
-		usleep(1000);
+		usleep(100);
 }
 
 static int	get_status(t_env *env)
@@ -86,7 +86,7 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state)
 	if (state == DIED)
 		return ((void)printf("%zu %d %sdied%s\n", time, id, RED, WHITE));
 	else if (state == FULL)
-		return ((void)printf("%zu %d %sis full%s\n", time, id, ORANGE, WHITE));
+		return ((void)printf("%sPhilosophers are full%s\n", ORANGE, WHITE));
 	pthread_mutex_lock(&env->print_mutex);
 	if (state == FORK_TAKEN && get_status(env))
 		printf("%zu %d %shas taken a fork%s\n", time, id, BLUE, WHITE);
