@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/20 01:45:02 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 17:39:48 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	parse_args(int ac, char **av)
 	{
 		j = -1;
 		while (av[i][++j])
-			if (!ft_isdigit(av[i][j]))
+			if (!(av[i][j] >= '0' && av[i][j] <= '9'))
 				return (error(ARG_ERROR), false);
 	}
 	if (ft_atoi(av[1]) > 200)

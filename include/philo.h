@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/20 01:38:02 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 17:22:56 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_env
 	int					meals_eaten;
 	pthread_mutex_t		protect_meals;
 	pthread_mutex_t		*forks;
-	// pthread_mutex_t		print_mutex;
+	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		status_mutex;
 	pthread_t			supervisor;
 	int					status;
@@ -83,7 +83,7 @@ int		is_dead(t_philo *philo);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 long	get_time(void);
-void	philo_print(t_env *env, t_philo *philo, t_pstate state, int locked);
+void	philo_print(t_env *env, t_philo *philo, t_pstate state);
 void	*error(t_error error);
 void	msleep(long sleep);
 
