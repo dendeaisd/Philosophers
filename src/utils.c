@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 17:36:51 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 19:02:36 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #define GREEN		"\033[38;5;156m"
 #define RED			"\033[0;31m"
 #define WHITE		"\033[0;97m"
+#define ORANGE		"\033[38;5;216m"
 
 int	ft_atoi(const char *str)
 {
@@ -84,6 +85,8 @@ void	philo_print(t_env *env, t_philo *philo, t_pstate state)
 	time = get_time() - env->start_time;
 	if (state == DIED)
 		return ((void)printf("%zu %d %sdied%s\n", time, id, RED, WHITE));
+	else if (state == FULL)
+		return ((void)printf("%zu %d %sis full%s\n", time, id, ORANGE, WHITE));
 	pthread_mutex_lock(&env->print_mutex);
 	if (state == FORK_TAKEN && get_status(env))
 		printf("%zu %d %shas taken a fork%s\n", time, id, BLUE, WHITE);

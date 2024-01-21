@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 17:22:56 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 18:46:37 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef enum e_pstate
 	EATING,
 	SLEEPING,
 	FORK_TAKEN,
+	FULL,
 	DIED
 }	t_pstate;
 
