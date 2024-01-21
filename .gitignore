@@ -1,0 +1,4 @@
+.DS_Store
+allowed_func.txt
+philo
+src/*.o
