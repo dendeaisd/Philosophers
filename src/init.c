@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 17:03:04 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 16:37:11 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 22:30:48 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static void	init_mutexes(t_env *env)
 {
 	if (pthread_mutex_init(&env->protect_meals, NULL))
-		error(MUTEX_ERROR);
+		return ((void)error(MUTEX_ERROR));
 	if (pthread_mutex_init(&env->status_mutex, NULL))
-		error(MUTEX_ERROR);
+		return ((void)error(MUTEX_ERROR));
 	if (pthread_mutex_init(&env->print_mutex, NULL))
-		error(MUTEX_ERROR);
+		return ((void)error(MUTEX_ERROR));
 }
 
 t_env	*init_env(int ac, char **av)
@@ -28,7 +28,7 @@ t_env	*init_env(int ac, char **av)
 
 	env = malloc(sizeof(t_env));
 	if (!env)
-		error(MALLOC_ERROR);
+		return (error(MALLOC_ERROR), NULL);
 	env->nb_philo = ft_atoi(av[1]);
 	env->time_to_die = ft_atoi(av[2]);
 	env->time_to_eat = ft_atoi(av[3]);
@@ -40,9 +40,9 @@ t_env	*init_env(int ac, char **av)
 	env->meals_eaten = 0;
 	env->forks = malloc(sizeof(pthread_mutex_t) * env->nb_philo);
 	if (!(env->forks))
-		error(MALLOC_ERROR);
+		return (error(MALLOC_ERROR), NULL);
 	if (env->time_to_die < 1 || env->time_to_eat < 1 || env->time_to_sleep < 1)
-		error(ARG_ERROR);
+		return (error(ARG_ERROR), NULL);
 	env->status = 1;
 	init_mutexes(env);
 	return (env);
@@ -56,7 +56,7 @@ t_philo	*init_philos(t_env *env)
 	i = -1;
 	philos = malloc(sizeof(t_philo) * (env->nb_philo));
 	if (!philos)
-		error(MALLOC_ERROR);
+		return (error(MALLOC_ERROR), NULL);
 	while (++i < env->nb_philo)
 	{
 		philos[i].id = i + 1;
@@ -66,7 +66,7 @@ t_philo	*init_philos(t_env *env)
 		philos[i].left_fork = &env->forks[(i + 1) % env->nb_philo];
 		philos[i].thread_id = 0;
 		if (pthread_mutex_init(&env->forks[i], NULL))
-			error(MUTEX_ERROR);
+			return (error(MUTEX_ERROR), NULL);
 	}
 	return (philos);
 }

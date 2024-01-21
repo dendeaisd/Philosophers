@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 20:55:17 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/21 22:48:00 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static bool	parse_args(int ac, char **av)
 	while (++i < ac)
 	{
 		j = -1;
+		if (!av[i][0])
+			return (error(ARG_ERROR), false);
 		while (av[i][++j])
 			if (!(av[i][j] >= '0' && av[i][j] <= '9'))
 				return (error(ARG_ERROR), false);
@@ -42,11 +44,11 @@ int	main(int ac, char **av)
 
 	i = -1;
 	if (ac != 5 && ac != 6)
-		error(ARG_NB);
-	env = init_env(ac, av);
-	philos = init_philos(env);
+		return (error(ARG_NB), 1);
 	if (parse_args(ac, av))
 	{
+		env = init_env(ac, av);
+		philos = init_philos(env);
 		if (pthread_create(&env->supervisor, NULL, &supervisor, philos))
 			error(THREAD_ERROR);
 		while (++i < env->nb_philo)
