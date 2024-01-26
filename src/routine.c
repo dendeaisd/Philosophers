@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 20:57:14 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/26 19:44:29 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,24 @@ void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
 	int		running;
+	int		meals_eaten;
+	int		nb_meals;
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->env->status_mutex);
 	running = philo->env->status;
 	pthread_mutex_unlock(&philo->env->status_mutex);
+	pthread_mutex_lock(&philo->env->protect_meals);
+		meals_eaten = philo->env->meals_eaten;
+		nb_meals = philo->env->nb_meals;
+	pthread_mutex_unlock(&philo->env->protect_meals);
 	if (philo->env->nb_philo == 1)
 		return (philo_print(philo->env, philo, FORK_TAKEN), \
 				NULL);
 	if (!running)
 		return (NULL);
-	while (philo->env->nb_meals == -1 \
-		|| philo->env->meals_eaten <= philo->env->nb_meals)
+	while (nb_meals == -1 \
+		|| meals_eaten <= nb_meals)
 	{
 		pthread_mutex_lock(&philo->env->status_mutex);
 		running = philo->env->status;
@@ -105,6 +111,10 @@ void	*philo_routine(void *arg)
 		philo_eat(philo->env, philo);
 		philo_sleep(philo->env, philo);
 		philo_think(philo->env, philo);
+		pthread_mutex_lock(&philo->env->protect_meals);
+		meals_eaten = philo->env->meals_eaten;
+		nb_meals = philo->env->nb_meals;
+		pthread_mutex_unlock(&philo->env->protect_meals);
 		if (!running)
 			break ;
 	}
