@@ -6,80 +6,27 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 18:41:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/26 19:44:29 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/26 20:20:35 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	eating_routine(t_env *env, t_philo *philo, \
-			pthread_mutex_t *first_fork, pthread_mutex_t *second_fork)
+static void	main_routine_loop(t_philo *philo, int running, \
+			int meals_eaten, int nb_meals)
 {
-	pthread_mutex_lock(first_fork);
-	philo_print(env, philo, FORK_TAKEN);
-	if (is_dead(philo))
-		return ((void)pthread_mutex_unlock(first_fork));
-	pthread_mutex_lock(second_fork);
-	philo_print(env, philo, FORK_TAKEN);
-	pthread_mutex_lock(&env->protect_meals);
-	philo->last_meal = get_time();
-	philo->env->meals_eaten++;
-	pthread_mutex_unlock(&env->protect_meals);
-	if (is_dead(philo))
-		return (pthread_mutex_unlock(first_fork), \
-			(void)pthread_mutex_unlock(second_fork));
-	pthread_mutex_lock(&env->status_mutex);
-	philo->state = EATING;
-	pthread_mutex_unlock(&env->status_mutex);
-	philo_print(env, philo, EATING);
-	msleep(philo->env->time_to_eat);
-	pthread_mutex_unlock(first_fork);
-	pthread_mutex_unlock(second_fork);
-}
-
-static void	philo_eat(t_env *env, t_philo *philo)
-{
-	pthread_mutex_t	*first_fork;
-	pthread_mutex_t	*second_fork;
-
-	if (is_dead(philo))
-		return ;
-	if (philo->id % 2 != 0)
+	while (running && (nb_meals == -1 || meals_eaten < nb_meals))
 	{
-		first_fork = philo->left_fork;
-		second_fork = philo->right_fork;
+		philo_eat(philo->env, philo);
+		philo_sleep(philo->env, philo);
+		philo_think(philo->env, philo);
+		pthread_mutex_lock(&philo->env->protect_meals);
+		meals_eaten = philo->env->meals_eaten;
+		pthread_mutex_unlock(&philo->env->protect_meals);
+		pthread_mutex_lock(&philo->env->status_mutex);
+		running = philo->env->status;
+		pthread_mutex_unlock(&philo->env->status_mutex);
 	}
-	else
-	{
-		first_fork = philo->right_fork;
-		second_fork = philo->left_fork;
-	}
-	if (philo->id == philo->env->nb_philo)
-		msleep(5);
-	eating_routine(env, philo, first_fork, second_fork);
-}
-
-static void	philo_sleep(t_env *env, t_philo *philo)
-{
-	if (is_dead(philo))
-		return ;
-	pthread_mutex_lock(&env->status_mutex);
-	philo->state = SLEEPING;
-	pthread_mutex_unlock(&env->status_mutex);
-	philo_print(env, philo, SLEEPING);
-	msleep(philo->env->time_to_sleep);
-}
-
-static void	philo_think(t_env *env, t_philo *philo)
-{
-	if (is_dead(philo))
-		return ;
-	pthread_mutex_lock(&env->status_mutex);
-	philo->state = THINKING;
-	pthread_mutex_unlock(&env->status_mutex);
-	philo_print(env, philo, THINKING);
-	if (is_dead(philo))
-		return ;
 }
 
 void	*philo_routine(void *arg)
@@ -94,29 +41,12 @@ void	*philo_routine(void *arg)
 	running = philo->env->status;
 	pthread_mutex_unlock(&philo->env->status_mutex);
 	pthread_mutex_lock(&philo->env->protect_meals);
-		meals_eaten = philo->env->meals_eaten;
-		nb_meals = philo->env->nb_meals;
+	meals_eaten = philo->env->meals_eaten;
+	nb_meals = philo->env->nb_meals;
 	pthread_mutex_unlock(&philo->env->protect_meals);
 	if (philo->env->nb_philo == 1)
 		return (philo_print(philo->env, philo, FORK_TAKEN), \
 				NULL);
-	if (!running)
-		return (NULL);
-	while (nb_meals == -1 \
-		|| meals_eaten <= nb_meals)
-	{
-		pthread_mutex_lock(&philo->env->status_mutex);
-		running = philo->env->status;
-		pthread_mutex_unlock(&philo->env->status_mutex);
-		philo_eat(philo->env, philo);
-		philo_sleep(philo->env, philo);
-		philo_think(philo->env, philo);
-		pthread_mutex_lock(&philo->env->protect_meals);
-		meals_eaten = philo->env->meals_eaten;
-		nb_meals = philo->env->nb_meals;
-		pthread_mutex_unlock(&philo->env->protect_meals);
-		if (!running)
-			break ;
-	}
+	main_routine_loop(philo, running, meals_eaten, nb_meals);
 	return (NULL);
 }

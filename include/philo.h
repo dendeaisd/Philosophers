@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:08:07 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 18:46:37 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/26 20:19:14 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,17 @@ t_philo	*init_philos(t_env *env);
 /*ROUTINE*/
 void	*philo_routine(void *arg);
 
+/*ACTIONS*/
+void	philo_eat(t_env *env, t_philo *philo);
+void	philo_sleep(t_env *env, t_philo *philo);
+void	philo_think(t_env *env, t_philo *philo);
+
 /*SUPERVISOR*/
 void	*supervisor(void *arg);
 
 /**UTILS**/
 int		is_dead(t_philo *philo);
 int		ft_atoi(const char *str);
-int		ft_isdigit(int c);
 long	get_time(void);
 void	philo_print(t_env *env, t_philo *philo, t_pstate state);
 void	*error(t_error error);

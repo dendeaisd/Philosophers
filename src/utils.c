@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:55:49 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 20:56:24 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/26 20:03:07 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	msleep(long sleep)
 
 	start = get_time();
 	while ((get_time() - start) < sleep)
-		usleep(100);
+		usleep(500);
 }
 
 static int	get_status(t_env *env)

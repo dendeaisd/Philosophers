@@ -6,7 +6,7 @@
 /*   By: fvoicu <fvoicu@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 22:06:36 by fvoicu            #+#    #+#             */
-/*   Updated: 2024/01/21 22:48:00 by fvoicu           ###   ########.fr       */
+/*   Updated: 2024/01/26 20:50:32 by fvoicu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static bool	parse_args(int ac, char **av)
 
 	i = 0;
 	if (!(*av) || *av[0] == '0')
-		return (error(ARG_ERROR), false);
-	if (av[1][0] == '0')
 		return (error(ARG_ERROR), false);
 	while (++i < ac)
 	{
@@ -36,6 +34,14 @@ static bool	parse_args(int ac, char **av)
 	return (true);
 }
 
+static bool	check_invalid_input(t_env *env)
+{
+	if (env->nb_philo <= 0 || env->time_to_die <= 0 || env->time_to_eat <= 0 \
+		|| env->time_to_sleep <= 0)
+		return (error(ARG_ERROR), false);
+	return (true);
+}
+
 int	main(int ac, char **av)
 {
 	t_env	*env;
@@ -48,6 +54,8 @@ int	main(int ac, char **av)
 	if (parse_args(ac, av))
 	{
 		env = init_env(ac, av);
+		if (!env || !check_invalid_input(env))
+			return (free(env), 1);
 		philos = init_philos(env);
 		if (pthread_create(&env->supervisor, NULL, &supervisor, philos))
 			error(THREAD_ERROR);
