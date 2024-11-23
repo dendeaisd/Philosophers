@@ -90,9 +90,9 @@ The simulation runs with the specified parameters, logging philosopher actions i
 ### Example Output 📸
 
 Below is an example screenshot of the program's output:
-
+![Screenshot 2024-11-23 232712](https://github.com/user-attachments/assets/af0957d5-7ab1-42e1-8754-0eb3cf8bb9eb)
 
 
 ## Conclusion 🎯
 
-The Philosophers project showcases a thoughtful balance of multithreading, resource synchronization, and error handling. By leveraging mutexes and dynamic time-sensitive logic, it offers an insightful exploration of concurrent programming principles.🧵🍴💭
+The Philosophers project demonstrates a well-crafted combination of multithreading, resource synchronization, and error handling. Through the use of mutexes and precise time-sensitive logic, it provides an engaging exploration of concurrent programming principles. 🧵🍴💭
