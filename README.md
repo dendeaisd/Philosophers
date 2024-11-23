@@ -1,12 +1,12 @@
 # Philosophers Project 🧘‍♂️🍝
 
----
+
 
 ## Project Overview
 
 The "Philosophers" project simulates a classical synchronization problem where philosophers sit at a round table, alternating between eating, thinking, and sleeping. The objective is to manage shared resources (forks) effectively to avoid starvation or deadlock while maintaining thread safety. The simulation ends when all philosophers have eaten a specified number of times or when one philosopher dies of starvation.
 
----
+
 
 ## Features and Highlights 🌟
 
@@ -35,7 +35,7 @@ The "Philosophers" project simulates a classical synchronization problem where p
    - Philosophers monitor their last meal time, ensuring they don’t starve.
    - A supervisor thread oversees the simulation, detecting starvation or completing the simulation based on the defined conditions.
 
----
+
 
 ## Key Technical Components 🔧
 
@@ -58,7 +58,6 @@ The "Philosophers" project simulates a classical synchronization problem where p
 - **Custom Utilities**:
   - Included helper functions for string-to-integer conversion, error logging, and thread-safe logging.
 
----
 
 ## How to Use 🛠️
 
@@ -92,7 +91,7 @@ The simulation runs with the specified parameters, logging philosopher actions i
 
 Below is an example screenshot of the program's output:
 
----
+
 
 ## Conclusion 🎯
 
