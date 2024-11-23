@@ -90,6 +90,7 @@ The simulation runs with the specified parameters, logging philosopher actions i
 ### Example Output 📸
 
 Below is an example screenshot of the program's output:
+
 ![Screenshot 2024-11-23 232712](https://github.com/user-attachments/assets/af0957d5-7ab1-42e1-8754-0eb3cf8bb9eb)
 
 
