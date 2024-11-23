@@ -1,4 +1,4 @@
-# Philosophers Project 🧘‍♂️🍝
+# Philosophers
 
 
 
