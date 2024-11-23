@@ -71,19 +71,19 @@ make        # Builds the program
 make clean  # Removes object files
 make fclean # Removes object files and the executable
 make re     # Cleans and rebuilds the program
-
+```
 ### Execution
 
 Run the program with the following parameters:
 
 ```bash
 ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
-
+```
 Example:
 
 ```bash
 ./philo 5 800 200 200
-
+```
 ### Behaviour
 
 The simulation runs with the specified parameters, logging philosopher actions in real-time. Philosophers take turns eating, sleeping, and thinking, avoiding starvation and deadlock.
