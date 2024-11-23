@@ -83,6 +83,11 @@ Example:
 ```bash
 ./philo 5 800 200 200
 ```
+
+### ⚠️ **Disclamer**
+
+For optimal performance and accurate behavior, it is recommended to use the program with a minimum value of **60 milliseconds** for time parameters such as `time_to_die`, `time_to_eat`, and `time_to_sleep`.
+ 
 ### Behaviour
 
 The simulation runs with the specified parameters, logging philosopher actions in real-time. Philosophers take turns eating, sleeping, and thinking, avoiding starvation and deadlock.
