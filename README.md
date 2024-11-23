@@ -84,9 +84,11 @@ Example:
 ./philo 5 800 200 200
 ```
 
+<div style="background-color: #e7f3fe; border-left: 6px solid #2196F3; padding: 10px;">
 ### ⚠️ **Disclamer**
 
 For optimal performance and accurate behavior, it is recommended to use the program with a minimum value of **60 milliseconds** for time parameters such as `time_to_die`, `time_to_eat`, and `time_to_sleep`.
+ </div>
  
 ### Behaviour
 
